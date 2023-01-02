@@ -1,0 +1,34 @@
+let item =
+[
+    [
+        1
+    ],
+    [
+        1
+    ],
+    [
+        1
+    ],
+    {
+        id: "72006423-dc98-4480-9af7-af6ed8f19f96",
+        name: "For Menz Hair Color",
+        units: "250ml/ 0.25Ltr"
+    },
+    {
+        id: "72006423-dc98-4480-9af7-af6ed8f19f96",
+        name: "For Menz Hair Color",
+        units: "250ml/ 0.25Ltr"
+    },
+    {
+        id: "72006423-dc98-4480-9af7-af6ed8f19f96",
+        name: "For Menz Hair Color",
+        units: "250ml/ 0.25Ltr"
+    }
+]
+
+item.forEach((x)=>{
+    if(x[0]==1){
+    }else{
+        console.log('add item')
+    }
+})
