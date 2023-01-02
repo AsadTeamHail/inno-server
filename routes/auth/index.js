@@ -104,7 +104,7 @@ routes.post("/signUp", async(req, res)=>{
             f_name:f_name, l_name:l_name, email:email,role:'customer', password:otp
           });
           name(customer.email, otp, 'Welcome To Innovatory');
-          res.json({status:'success'});
+          res.json({status:'success',customer});
         }
     }else if(type=="shopowner"){
       
@@ -124,7 +124,6 @@ routes.post("/signUp", async(req, res)=>{
           })
           name(shopOwner.email, otp, 'Welcome To Innovatory');
           res.json({status:'success'});
-          res.send(shopOwner)
         }
     }else{
       res.json({status:'error', message:"Something Went Wrong Please Try Again"});
