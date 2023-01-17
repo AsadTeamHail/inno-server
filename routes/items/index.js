@@ -111,6 +111,24 @@ routes.post("/forkItem", async(req, res) => {
     }
 });
 
+routes.get("/getItemsByShopId",async(req,res)=>{
+  console.log(req.headers)
+  try {
+    const result = await ShopItems.findAll({ 
+      where: {ShopId: [req.headers.id]},
+      include:[
+        {model:ChildCategories},
+    ]
+    });
+    res.send(result);
+  }
+  catch (error) {
+    res.send(error);
+  }
+
+
+});
+
 // ---------------------  Experimental Api ---------------------
 // routes.post("/createBulkItems", async(req, res) => {
 //   console.log(req.body)
