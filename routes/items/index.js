@@ -112,12 +112,12 @@ routes.post("/forkItem", async(req, res) => {
 });
 
 routes.get("/getItemsByShopId",async(req,res)=>{
-  console.log(req.headers)
+  console.log(req.body)
   try {
     const result = await ShopItems.findAll({ 
-      where: {ShopId: [req.headers.id]},
+      where: {ShopId: req.body.id},
       include:[
-        {model:ChildCategories},
+        {model:ChildCategories}
     ]
     });
     res.send(result);
