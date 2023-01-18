@@ -66,6 +66,23 @@ routes.get("/searchItems", async(req, res) => {
   }
 });
 
+routes.get("/searchShopItems", async(req, res) => {
+  console.log(req.headers)
+  try {
+    const result = await ShopItems.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${req.headers.searchword}%`
+        }
+      }
+    });
+    res.send(result);
+  }
+  catch (error) {
+    res.send(error);
+  }
+});
+
 routes.post("/forkItem", async(req, res) => {
 
     console.log(req.body)
