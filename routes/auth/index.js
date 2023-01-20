@@ -145,7 +145,8 @@ routes.post("/login", async(req, res)=>{
         const customer = await Users.update({password:otp},{where:{id:customerVerification.id}});
         console.log(customer);
         name(customerVerification.email, otp, 'Innovatory OTP');
-        res.json({status:'success'});
+        res.status(200).json(customerVerification)
+        // res.json({status:'success'},customerVerification);
       }else{
         res.json({status:'error'});
       }
