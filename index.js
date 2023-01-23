@@ -14,6 +14,7 @@ const shopRoutes = require('./routes/shops');
 const userRoutes = require('./routes/users');
 const productCategories = require('./routes/categories');
 const items = require('./routes/items');
+const customerPurchases = require('./routes/customerpurchases');
 
 app.use(morgan('tiny'));
 
@@ -31,6 +32,7 @@ app.use("/shops", shopRoutes);
 app.use("/user", userRoutes);
 app.use("/categories", productCategories);
 app.use("/items", items);
+app.use("/customerpurchases", customerPurchases);
 
 const PORT = process.env.PORT || 8080;
 
