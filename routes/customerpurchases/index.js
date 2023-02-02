@@ -5,7 +5,7 @@ const Op = Sequelize.Op;
 const { Items, ShopItems, Shops } = require('../../functions/associations/shopAssociation');
 const {CustomerPurchase} = require('../../functions/associations/customerPurchasesAssociation')
 
-routes.post("/purchasedItems", async(req, res) => {
+routes.post("/purchaseItems", async(req, res) => {
     
     console.log(req.body)
 
