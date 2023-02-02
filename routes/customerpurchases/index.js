@@ -37,8 +37,8 @@ routes.post("/purchaseItems", async(req, res) => {
 routes.get("/getPurchasedItemsVendor",async(req,res)=>{
         console.log(req.body);
     try {
-        const result = await CustomerPurchase.findOne({
-        where:[{ShopId:req.body.id}],
+        const result = await CustomerPurchase.findAll({
+        where:[{ShopId:req.headers.id}],
         });
         res.send(result);
     }
