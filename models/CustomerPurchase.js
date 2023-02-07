@@ -16,8 +16,22 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true
             }
         },
+        pd_price:{
+            type:DataTypes.STRING,
+            allowNull: false,
+            validate:{
+                notEmpty: true
+            }
+        },
         quantity:{
             type:DataTypes.INTEGER,
+            allowNull: false,
+            validate:{
+                notEmpty: true
+            }
+        },
+        status:{
+            type:DataTypes.STRING,
             allowNull: false,
             validate:{
                 notEmpty: true

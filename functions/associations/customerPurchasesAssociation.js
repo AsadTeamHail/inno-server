@@ -29,4 +29,4 @@ Users.hasMany(CustomerPurchase, {
 });
 CustomerPurchase.belongsTo(Users);
 
-module.exports = { CustomerPurchase }
+module.exports = { CustomerPurchase, Users }

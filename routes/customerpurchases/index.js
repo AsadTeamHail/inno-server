@@ -3,7 +3,7 @@ var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 const { Items, ShopItems, Shops } = require('../../functions/associations/shopAssociation');
-const {CustomerPurchase} = require('../../functions/associations/customerPurchasesAssociation')
+const {CustomerPurchase, Users} = require('../../functions/associations/customerPurchasesAssociation')
 
 routes.post("/purchasedItems", async(req, res) => {
     
@@ -14,6 +14,8 @@ routes.post("/purchasedItems", async(req, res) => {
         ShopItemId:rqBody.ShopItemId,
         ShopId:rqBody.ShopId,
         UserId:rqBody.UserId,
+        status:rqBody.status,
+        pd_price:rqBody.pd_price,
         total_price:rqBody.total_price,
         quantity:rqBody.quantity
       },
@@ -21,6 +23,8 @@ routes.post("/purchasedItems", async(req, res) => {
         ShopItemId:rqBody.ShopItemId,
         ShopId:rqBody.ShopId,
         UserId:rqBody.UserId,
+        status:rqBody.status,
+        pd_price:rqBody.pd_price,
         total_price:rqBody.total_price,
         quantity:rqBody.quantity
       })
@@ -35,10 +39,13 @@ routes.post("/purchasedItems", async(req, res) => {
 });
 
 routes.get("/getPurchasedItemsVendor",async(req,res)=>{
-        console.log(req.body);
+    console.log(req.headers.id);
     try {
-        const result = await CustomerPurchase.findOne({
-        where:[{ShopId:req.body.id}],
+        const result = await CustomerPurchase.findAll({
+        where:{ShopId:req.headers.id},
+        include:[
+          {model:ShopItems},
+          {model:Users}],
         });
         res.send(result);
     }

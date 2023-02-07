@@ -2,7 +2,7 @@ const routes = require('express').Router();
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
-const { ChildCategories } = require('../../functions/associations/categoryAssociations');
+const { ChildCategories, Users } = require('../../functions/associations/categoryAssociations');
 const { Items, ShopItems } = require('../../functions/associations/shopAssociation');
 
 routes.post("/createItem", async(req, res) => {
