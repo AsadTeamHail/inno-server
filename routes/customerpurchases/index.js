@@ -38,18 +38,32 @@ routes.post("/purchaseItems", async(req, res) => {
     }
 });
 
-routes.get("/getPurchasedItemsVendor",async(req,res)=>{
+routes.get("/getUpcomingOrders",async(req,res)=>{
     console.log(req.headers.id);
     try {
         const result = await CustomerPurchase.findAll({
-<<<<<<< HEAD
         where:{ShopId:req.headers.id},
         include:[
           {model:ShopItems},
           {model:Users}],
-=======
-        where:[{ShopId:req.headers.id}],
->>>>>>> c8023b68bbaa69478815a55a0902a7c885b9a453
+        where:[{ShopId:req.headers.id},{status:'pending'}],
+        });
+        res.send(result);
+    }
+    catch (error) {
+        res.send(error);
+    }
+})
+
+routes.get("/getCompletedOrders",async(req,res)=>{
+    console.log(req.headers.id);
+    try {
+        const result = await CustomerPurchase.findAll({
+        where:{ShopId:req.headers.id},
+        include:[
+          {model:ShopItems},
+          {model:Users}],
+          where:[{ShopId:req.headers.id},{status:'completed'}],
         });
         res.send(result);
     }
