@@ -5,7 +5,7 @@ const Op = Sequelize.Op;
 const { Items, ShopItems, Shops } = require('../../functions/associations/shopAssociation');
 const {CustomerPurchase, Users} = require('../../functions/associations/customerPurchasesAssociation')
 
-routes.post("/purchasedItems", async(req, res) => {
+routes.post("/purchaseItems", async(req, res) => {
     
     console.log(req.body)
 
@@ -42,10 +42,14 @@ routes.get("/getPurchasedItemsVendor",async(req,res)=>{
     console.log(req.headers.id);
     try {
         const result = await CustomerPurchase.findAll({
+<<<<<<< HEAD
         where:{ShopId:req.headers.id},
         include:[
           {model:ShopItems},
           {model:Users}],
+=======
+        where:[{ShopId:req.headers.id}],
+>>>>>>> c8023b68bbaa69478815a55a0902a7c885b9a453
         });
         res.send(result);
     }

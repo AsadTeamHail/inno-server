@@ -32,6 +32,23 @@ routes.get("/getAllItems", async(req, res) => {
     }
 });
 
+routes.get("/getItems", async(req, res) => {
+  console.log(req.headers);
+  try {
+    const result = await ChildCategories.findOne({
+      where:{name:req.headers.name},
+      attributes:["id","name"],
+      include:[
+          {model:Items}
+      ]
+    });
+    res.send(result);
+  }
+  catch (error) {
+    res.send(error);
+  }
+});
+
 routes.get("/searchItems", async(req, res) => {
   console.log(req.headers)
   try {
@@ -111,33 +128,15 @@ routes.post("/forkItem", async(req, res) => {
     }
 });
 
-routes.get("/getItems", async(req, res) => {
-  console.log(req.headers);
-  try {
-    const result = await ChildCategories.findOne({
-      where:{name:req.headers.name},
-      attributes:["id","name"],
-      include:[
-          {model:Items}
-      ]
-    });
-    res.send(result);
-  }
-  catch (error) {
-    res.send(error);
-  }
-});
-
 routes.post("/getItemsByShopId",async(req,res)=>{
   console.log(req.body)
   try {
     const result = await ChildCategories.findAll({ 
       where: {name:req.body.name},
-      attributes:["id","name"],
+      attributes:["id"],
       include:[
         {model:ShopItems,
           where: {ShopId: req.body.id},
-          required: false,
         }
         ]
     });
@@ -147,6 +146,24 @@ routes.post("/getItemsByShopId",async(req,res)=>{
     res.send(error);
   }
 });
+
+// routes.post("/getItemsByShopId",async(req,res)=>{
+//   console.log(req.body)
+//   try {
+//     const result = await ShopItems.findAll({ 
+//       where: {ShopId: req.body.id,},
+//       include:[
+//         {model:ChildCategories}
+//     ]
+//     });
+//     res.send(result);
+//   }
+//   catch (error) {
+//     res.send(error);
+//   }
+  
+// });
+
 
 // ---------------------  Experimental Api ---------------------
 // routes.post("/createBulkItems", async(req, res) => {
