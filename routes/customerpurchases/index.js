@@ -72,4 +72,15 @@ routes.get("/getCompletedOrders",async(req,res)=>{
     }
 })
 
+routes.post("/updateOrderStatus",async(req,res)=>{
+  console.log(req.body.id);
+try{
+  const UpdateStatus = CustomerPurchase.update({status:'completed'},{where:{id:req.body.id}})
+  res.send(UpdateStatus).status(200)
+}catch(e){
+  res.send(e)
+}
+})
+
+
 module.exports = routes;

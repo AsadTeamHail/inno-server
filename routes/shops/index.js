@@ -2,8 +2,9 @@ const routes = require('express').Router();
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
-//const { Shops } = require('../../models');
-const { Shops } = require('../../functions/associations/shopAssociation')
+const { ParentCategories } = require('../../models');
+const { Shops, ShopCategories } = require('../../functions/associations/shopAssociation')
+const { ChildCategories } = require('../../functions/associations/categoryAssociations')
 
 routes.get("/getNearByShops", async(req, res) => {
 
@@ -47,8 +48,41 @@ routes.post("/shopCreation", async(req, res) => {
 routes.get("/loadVendorShop", async(req, res) => {
 
   try {
-      const value = await Shops.findOne({ where:{ShopUserId:req.headers.id} });
+      const value = await Shops.findOne({
+        where:{ShopUserId:req.headers.id} 
+        
+        });
       res.json({status:'success', result:value});
+  }
+  catch (error) {
+    res.json({status:'error'});
+  }
+});
+
+routes.get("/loadVendorShop", async(req, res) => {
+
+  console.log('======================== ',req.headers)
+  function makePrCat (cat) {
+    let result = [];
+    cat.forEach(x => {
+      result.push(x.ParentCategoryId)
+    });
+    return result;
+  }
+
+  try {
+      const value = await Shops.findOne({ 
+        where:{ShopUserId:req.headers.id},
+        include:[
+          {
+            model:ShopCategories,
+            attributes:['ParentCategoryId']
+          }
+        ] 
+      });
+      const result = await ShopCategories.findAll({where:{ShopId:value.id}});
+      const resultTwo = await ParentCategories.findAll({where:{id:makePrCat(result)}, attributes:['id', 'name'], include:[{model:ChildCategories, attributes:['id', 'name'] }] });
+      res.json({status:'success', resultOne:value, resultTwo:resultTwo});
   }
   catch (error) {
     res.json({status:'error'});

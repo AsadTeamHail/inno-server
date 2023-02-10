@@ -1,6 +1,14 @@
 const { DataTypes } = require('sequelize');
 
-const { ParentCategories, ChildCategories, Items, ShopItems, Shops, ShopUsers } = require("../../models");
+const { ParentCategories, ChildCategories, Items, ShopItems, Shops, ShopUsers, ShopCategories } = require("../../models");
+
+ParentCategories.hasMany(Items, {
+    foriegnKey:{
+        type: DataTypes.UUID,
+        allowNull:false
+    }
+});
+Items.belongsTo(ParentCategories);
 
 ChildCategories.hasMany(Items, {
     foriegnKey:{
@@ -10,6 +18,7 @@ ChildCategories.hasMany(Items, {
 });
 Items.belongsTo(ChildCategories);
 
+
 Shops.hasMany(ShopItems, {
     foriegnKey:{
         type: DataTypes.UUID,
@@ -17,6 +26,22 @@ Shops.hasMany(ShopItems, {
     }
 });
 ShopItems.belongsTo(Shops);
+
+Shops.hasMany(ShopCategories, {
+    foriegnKey:{
+        type: DataTypes.UUID,
+        allowNull:false
+    }
+});
+ShopCategories.belongsTo(Shops);
+
+ParentCategories.hasMany(ShopCategories, {
+    foriegnKey:{
+        type: DataTypes.UUID,
+        allowNull:false
+    }
+});
+ShopCategories.belongsTo(ParentCategories);
 
 ChildCategories.hasMany(ShopItems, {
     foriegnKey:{
@@ -34,7 +59,7 @@ Items.hasMany(ShopItems, {
 });
 ShopItems.belongsTo(Items);
 
-ShopUsers.hasOne(Shops,{
+ShopUsers.hasOne(Shops, {
     foriegnKey:{
         type: DataTypes.UUID,
         allowNull:false
@@ -42,4 +67,4 @@ ShopUsers.hasOne(Shops,{
 });
 //Shops.belongsTo(ShopUsers)
 
-module.exports = { Items, ShopItems, Shops };
+module.exports = { Items, ShopItems, Shops, ShopCategories };
