@@ -31,8 +31,23 @@ routes.post("/purchaseItems", async(req, res) => {
     })
     try {
         const result = await Promise.all(promises)
-        res.send(result);
-    }
+        var message = {
+          app_id: ONE_SIGNAL_CONFIG.APP_ID,
+          contents:{"en":`Pay Pending Commission to Start receiving Calls Again`},
+          included_segments:['included_player_ids'],
+          include_player_ids:[`${req.body.device_id}`],
+          content_available: true,
+          small_icon:"ic_notification_icon",
+          data:{
+              PushTitle:"CUSTOM NOTIFICATION"
+            },
+            headings:{
+              "en":"Account On Hold!"
+            }
+          }
+          pushNotificationService.sendNotification(message, (error, results) => {});
+          res.send(result);
+        }
     catch (error) {
       res.send(error);
     }
