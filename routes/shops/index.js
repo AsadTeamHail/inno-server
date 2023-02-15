@@ -30,29 +30,31 @@ routes.get("/getNearByShops", async(req, res) => {
 
 routes.post("/shopCreation", async(req, res) => {
 
-  try {
-      const value = await Shops.create({
-        ShopUserId:req.body.ShopUserId,
-        name:req.body.name, type:req.body.type,
-        country:req.body.country, city:req.body.city,
-        opening:req.body.opening, closing:req.body.closing,
-        address:req.body.address, long:req.body.long, lat:req.body.lat
-      });
-      res.json({status:'success', result:value});
+  console.log(req.body)
+  function makeCat (cat, id) {
+    let result = [];
+    cat.forEach(x => {
+      result.push({ParentCategoryId:x.id, ShopId:id})
+    });
+    return result;
   }
-  catch (error) {
-    res.json({status:'error'});
+  function makePrCat (cat) {
+    let result = [];
+    cat.forEach(x => {
+      result.push(x.ParentCategoryId)
+    });
+    return result;
   }
-});
-
-routes.get("/loadVendorShop", async(req, res) => {
 
   try {
-      const value = await Shops.findOne({
-        where:{ShopUserId:req.headers.id} 
-        
-        });
-      res.json({status:'success', result:value});
+    const value = await Shops.create({
+      ShopUserId:req.body.ShopUserId,
+      name:req.body.name, type:req.body.type, country:req.body.country, city:req.body.city,
+      opening:req.body.opening, closing:req.body.closing, address:req.body.address, long:req.body.long, lat:req.body.lat
+    })
+    const result = await ShopCategories.bulkCreate(makeCat(req.body.categories, value.id));
+    const resultTwo = await ParentCategories.findAll({where:{id:makePrCat(result)}, attributes:['id', 'name'], include:[{model:ChildCategories, attributes:['id', 'name'] }] });
+    res.json({status:'success', result:resultTwo});
   }
   catch (error) {
     res.json({status:'error'});
@@ -90,7 +92,6 @@ routes.get("/loadVendorShop", async(req, res) => {
 });
 
 // ---------------------  Experimental Api ---------------------
-
 // routes.post("/createBulkShops", async(req, res) => {
 //   console.log(req.body)
 //   try {
