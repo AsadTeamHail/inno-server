@@ -28,6 +28,16 @@ routes.get("/getNearByShops", async(req, res) => {
   }
 });
 
+routes.get("/getVendorShopDetails", async(req, res) => {
+  console.log(req.headers)
+  try{
+    const vendorShop = await Shops.findAll({where:{ShopUserId:req.headers.id}})
+    res.status(200).json({message:"success",payload:vendorShop}) 
+  }catch(e){
+    res.status(500).json({message:"Bad Request or Internal Server Error."})
+  }
+});
+
 routes.post("/shopCreation", async(req, res) => {
 
   console.log(req.body)
@@ -90,6 +100,14 @@ routes.get("/loadVendorShop", async(req, res) => {
     res.json({status:'error'});
   }
 });
+
+routes.delete("/DeleteVendorShop",async(req, res) => {
+  
+})
+
+routes.post("/UpdateVendorShop",async(req, res) => {
+
+})
 
 // ---------------------  Experimental Api ---------------------
 // routes.post("/createBulkShops", async(req, res) => {
