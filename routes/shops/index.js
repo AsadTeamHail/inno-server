@@ -101,12 +101,41 @@ routes.get("/loadVendorShop", async(req, res) => {
   }
 });
 
-routes.delete("/DeleteVendorShop",async(req, res) => {
-  
+routes.post("/DisableVendorShop",async(req, res) => {
+try{
+    const disable = req.headers.disable;
+    const deleteVendor = await Shops.update({where: { active:`${disable}`,},force: true})
+    res.status(200).send(deleteVendor)
+
+}catch(e){
+  res.status(500).json({message:"Bad Request or Internal Server Error."})
+}
+})
+
+routes.post("/EnableVendorShop",async(req, res) => {
+try{
+  const enable = req.headers.enable;
+  const deleteVendor = await Shops.update({where: { active:`${enable}`,},force: true})
+  res.status(200).send(deleteVendor)
+
+}catch(e){
+  res.status(500).json({message:"Bad Request or Internal Server Error."})
+}
 })
 
 routes.post("/UpdateVendorShop",async(req, res) => {
-
+  console.log(req.body);
+  try {
+    const UpdatedShop = await UserSavedAddresses.update({
+      address:req.body.userAddress, street:req.body.userStreet, unit:req.body.userFloor,
+      optionalNote:req.body.userOptionalDetail, lat:req.body.latitude, label:req.body.userLabel,
+      long:req.body.longitude
+    },{where:{id:req.body.id}})
+    res.status(200).json({message:"success",UpdatedShop});
+  }
+  catch (error) {
+    res.status(500).json({message:"Bad Request or Internal Server Error."})
+  }
 })
 
 // ---------------------  Experimental Api ---------------------

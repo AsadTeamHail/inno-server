@@ -72,6 +72,20 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true
             }
         },
+        Active:{
+            type:DataTypes.INTEGER,
+            allowNull: false,
+            validate:{
+                notEmpty: true
+            }
+        },
+        ShopImage:{
+            type:DataTypes.INTEGER,
+            allowNull: false,
+            validate:{
+                notEmpty: true
+            }
+        },
     })
     return Shops
 }

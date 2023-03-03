@@ -2,7 +2,7 @@ const routes = require('express').Router();
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
-const { Users } = require('../../models');
+const { Users, ShopUsers } = require('../../models');
 const { UserSavedAddresses } = require('../../functions/associations/userAssociations')
 
 routes.get("/getSavedAddresses", async(req, res)=>{
@@ -51,6 +51,22 @@ routes.post("/deleteAddress", async(req, res)=>{
   try {
     await UserSavedAddresses.destroy({where:{id:req.body.id}})
     res.send("newAddress");
+  }
+  catch (error) {
+    res.send(error);
+  }
+});
+
+routes.post("/updatePersonalInfo", async(req, res)=>{
+  console.log(req.body);
+  const {type, email ,id} = req.body
+  try {
+    if(type=='customer'){
+      res.json({message:"notnow"})
+    }else if(type=='vendor'){
+      const updateVendorInfo = await ShopUsers.update({email:email},{where:{id:id}})
+      res.status(200).json({message:"success",updateVendorInfo})
+    }
   }
   catch (error) {
     res.send(error);
