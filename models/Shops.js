@@ -80,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         ShopImage:{
-            type:DataTypes.INTEGER,
+            type:DataTypes.STRING,
             allowNull: false,
             validate:{
                 notEmpty: true

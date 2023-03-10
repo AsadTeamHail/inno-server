@@ -63,7 +63,7 @@ routes.post("/updatePersonalInfo", async(req, res)=>{
   try {
     if(type=='customer'){
       res.json({message:"notnow"})
-    }else if(type=='vendor'){
+    }else if(type=='shopuser'){
       const updateVendorInfo = await ShopUsers.update({email:email},{where:{id:id}})
       res.status(200).json({message:"success",updateVendorInfo})
     }

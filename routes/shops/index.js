@@ -60,7 +60,8 @@ routes.post("/shopCreation", async(req, res) => {
     const value = await Shops.create({
       ShopUserId:req.body.ShopUserId,
       name:req.body.name, type:req.body.type, country:req.body.country, city:req.body.city,
-      opening:req.body.opening, closing:req.body.closing, address:req.body.address, long:req.body.long, lat:req.body.lat
+      opening:req.body.opening, closing:req.body.closing, address:req.body.address, long:req.body.long, 
+      lat:req.body.lat, ShopImage:req.body.shop_img, Active:req.body.active
     })
     const result = await ShopCategories.bulkCreate(makeCat(req.body.categories, value.id));
     const resultTwo = await ParentCategories.findAll({where:{id:makePrCat(result)}, attributes:['id', 'name'], include:[{model:ChildCategories, attributes:['id', 'name'] }] });
@@ -101,22 +102,16 @@ routes.get("/loadVendorShop", async(req, res) => {
   }
 });
 
-routes.post("/DisableVendorShop",async(req, res) => {
+routes.post("/VendorShopSwtich",async(req, res) => {
 try{
-    const disable = req.headers.disable;
-    const deleteVendor = await Shops.update({where: { active:`${disable}`,},force: true})
-    res.status(200).send(deleteVendor)
-
-}catch(e){
-  res.status(500).json({message:"Bad Request or Internal Server Error."})
-}
-})
-
-routes.post("/EnableVendorShop",async(req, res) => {
-try{
-  const enable = req.headers.enable;
-  const deleteVendor = await Shops.update({where: { active:`${enable}`,},force: true})
-  res.status(200).send(deleteVendor)
+    const {type,id} = req.body;
+    if(type=='enable'){
+      const enableVendorShop = await Shops.update({ Active:1},{where: {ShopUserId:id},force: true})
+      res.status(200).send(enableVendorShop)
+    }else if(type=='disable'){
+      const disableVendorShop = await Shops.update({ Active:0},{where: {ShopUserId:id},force: true})
+      res.status(200).send(disableVendorShop)
+    }
 
 }catch(e){
   res.status(500).json({message:"Bad Request or Internal Server Error."})
@@ -126,10 +121,11 @@ try{
 routes.post("/UpdateVendorShop",async(req, res) => {
   console.log(req.body);
   try {
-    const UpdatedShop = await UserSavedAddresses.update({
-      address:req.body.userAddress, street:req.body.userStreet, unit:req.body.userFloor,
-      optionalNote:req.body.userOptionalDetail, lat:req.body.latitude, label:req.body.userLabel,
-      long:req.body.longitude
+    const UpdatedShop = await Shops.update({
+      ShopUserId:req.body.ShopUserId,
+      name:req.body.name, type:req.body.type, country:req.body.country, city:req.body.city,
+      opening:req.body.opening, closing:req.body.closing, address:req.body.address, long:req.body.long, 
+      lat:req.body.lat, ShopImage:req.body.shop_img, Active:req.body.active
     },{where:{id:req.body.id}})
     res.status(200).json({message:"success",UpdatedShop});
   }
